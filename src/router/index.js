@@ -4,6 +4,8 @@ import Personas from '../components/Personas.vue'
 import Planetas from '../components/Planetas.vue'
 import Naves from '../components/Naves.vue'
 import PersonaDetalle from '../components/PersonaDetalle.vue'
+import NaveDetalle from '../components/NaveDetalle.vue'
+import PlanetaDetalle from '../components/PlanetaDetalle.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -25,6 +27,18 @@ const router = createRouter({
       path: '/personas/:id',
       name: 'PersonaDetalle',
       component: PersonaDetalle,
+      props: true
+    },
+    {
+      path: '/planetas/:id',
+      name: 'PlanetaDetalle',
+      component: PlanetaDetalle,
+      props: true
+    },
+    {
+      path: '/naves/:id',
+      name: 'NaveDetalle',
+      component: NaveDetalle,
       props: true
     }
   ]
