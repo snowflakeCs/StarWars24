@@ -2,9 +2,10 @@
     <v-card flat>
         <v-toolbar height="100" :elevation="8" color="#020106" dark dense>
             <v-app-bar-nav-icon></v-app-bar-nav-icon>
-            <v-toolbar-title class="text-h5"><h2 class="textCool">Star Wars Info</h2></v-toolbar-title>
+            <v-toolbar-title class="text-h5"><h2 @click="goHome" class="textCool">Star Wars Info</h2></v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-text-field v-model="searchQuery" label="Buscar por nombre o tipo"
+
+            <v-text-field v-if="!isHomeView" v-model="searchQuery" label="Buscar por nombre o tipo"
                 @input="filterItems" clearable variant="outlined" dense>
             </v-text-field>
             <v-spacer></v-spacer>
@@ -61,6 +62,11 @@ export default {
             dialog: false,
             selectedResult: null,
         };
+    }, computed: {
+        isHomeView() {
+            // Comprueba si la ruta actual es HomeView
+            return this.$route.name === 'home';
+        }
     },
     mounted() {
         this.fetchItems('people');
@@ -130,6 +136,9 @@ export default {
         goToStarships() {
             this.$router.push({ path: '/naves?page=1' });
         },
+        goHome() {
+            this.$router.push({ path: '/' });
+        }
     },
 };
 </script>
