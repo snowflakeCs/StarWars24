@@ -27,7 +27,6 @@
                 <v-card-text>
                     <div class="person-details">
                         <p class="text-h4 text--primary">Detalles de {{ selectedResult.name }}</p>
-                        <!-- Aquí muestra los detalles del elemento seleccionado -->
                     </div>
                 </v-card-text>
                 <v-card-actions>
@@ -88,9 +87,39 @@ export default {
                 item.name.toLowerCase().includes(query)
             );
         },
+        getType(item) {
+            if (item.hasOwnProperty('gender')) {
+                return 'Persona';
+            } else if (item.hasOwnProperty('starship_class')) {
+                return 'Nave';
+            } else if (item.hasOwnProperty('terrain')) {
+                return 'Planeta';
+            }
+            return '';
+        },
         showDetails(item) {
-            this.selectedResult = item;
-            this.dialog = true;
+            let routeName;
+            const tipo = this.getType(item);
+            switch (tipo) {
+                case 'Persona':
+                    routeName = 'PersonaDetalle';
+                    break;
+                case 'Nave':
+                    routeName = 'NaveDetalle';
+                    break;
+                case 'Planeta':
+                    routeName = 'PlanetaDetalle';
+                    break;
+                default:
+                    console.error('Tipo de item no reconocido:', item.type);
+                    return;
+            }
+            const id = this.getIdFromUrl(item.url); // Obtener el ID de la URL del item
+            this.$router.push({ name: routeName, params: { id: id } }); // Navegar a la ruta de detalle correspondiente con el ID como parámetro
+        },
+        getIdFromUrl(url) {
+            const parts = url.split('/');
+            return parts[parts.length - 2];
         },
         goToPeople() {
             this.$router.push({ path: '/personas?page=1' });
