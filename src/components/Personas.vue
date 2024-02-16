@@ -19,6 +19,8 @@
                     </v-card>
                 </v-col>
             </v-row>
+            <v-btn @click="goToPreviousPage('people')" v-if="currentPage > 1">Anterior</v-btn>
+            <v-btn @click="goToNextPage('people')" v-if="currentPage < totalPages">Siguiente</v-btn>
             <router-view></router-view> 
         </v-container>
     </div>
@@ -30,21 +32,37 @@ import axios from 'axios';
 export default {
     data() {
         return {
-            people: []
+            people: [], 
+            currentPage: 1,
+            totalPages: null
         };
     },
     mounted() {
         this.fetchPeople();
     },
     methods: {
-        fetchPeople() {
-            axios.get('https://swapi.dev/api/people/')
-                .then(response => {
-                    this.people = response.data.results;
-                })
-                .catch(error => {
-                    console.error('Error fetching people:', error);
-                });
+        async fetchPeople(page = 1) {
+            try {
+                const response = await axios.get(`https://swapi.dev/api/people/?page=${page}`);
+                this.people = response.data.results;
+                this.totalPages = Math.ceil(response.data.count / 10);
+            } catch (error) {
+                console.error('Error fetching people:', error);
+            }
+        },
+        async goToPage(page) {
+            await this.fetchPeople(page);
+            this.currentPage = page;
+        },
+        goToPreviousPage(category) {
+            if (this.currentPage > 1) {
+                this.goToPage(category, this.currentPage - 1);
+            }
+        },
+        goToNextPage(category) {
+            if (this.currentPage < this.totalPages) {
+                this.goToPage(category, this.currentPage + 1);
+            }
         },
         showDetails(person) {
             this.$router.push({ name: 'PersonaDetalle', params: { id: this.getIdFromUrl(person.url) } });
