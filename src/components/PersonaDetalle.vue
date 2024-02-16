@@ -1,7 +1,7 @@
 
 <template>
     <v-dialog v-model="dialog" max-width="600">
-        <v-card v-if="selectedPerson">
+        <v-card v-if="selectedPerson" v-click-outside="hideDialog">
             <v-card-text class="pb-0">
                 <div class="person-details">
                     <p class="text-h4 text--primary">
@@ -40,7 +40,7 @@
                 </div>
             </v-card-text>
             <v-card-actions class="pt-0">
-                <v-btn variant="text" color="teal-accent-4" @click="closeDialog">
+                <v-btn variant="text" color="teal-accent-4" @click.self="closeDialog">
                     Cerrar
                 </v-btn>
             </v-card-actions>
@@ -74,6 +74,8 @@ export default {
                 .catch(error => {
                     console.error('Error fetching person details:', error);
                 });
+        }, hideDialog() {
+            this.$router.push({ name: 'personas' });
         },
         closeDialog() {
             this.$router.push({ name: 'personas' }); 
