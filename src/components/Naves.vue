@@ -18,6 +18,8 @@
                 </v-card>
             </v-col>
         </v-row>
+       <v-btn @click="goToPreviousPage('starships')" v-if="currentPage > 1">Anterior</v-btn>
+        <v-btn @click="goToNextPage('starships')" v-if="currentPage < totalPages">Siguiente</v-btn>
         <router-view></router-view> 
     </v-container>
     </div>
@@ -29,29 +31,46 @@ import axios from 'axios';
 export default {
     data() {
         return {
-            starships: []
+            starships: [],
+            currentPage: 1,
+            totalPages: null
         };
     },
     mounted() {
         this.fetchStarships();
     },
     methods: {
-        fetchStarships() {
-            axios.get('https://swapi.dev/api/starships/')
-                .then(response => {
-                    this.starships = response.data.results;
-                })
-                .catch(error => {
-                    console.error('Error fetching starships:', error);
-                });
+        async fetchStarships(page = 1) {
+            try {
+                const response = await axios.get(`https://swapi.dev/api/starships/?page=${page}`);
+                this.starships = response.data.results;
+                this.totalPages = Math.ceil(response.data.count / 10); // Suponiendo que cada página contiene 10 elementos
+            } catch (error) {
+                console.error('Error fetching starships:', error);
+            }
+        },
+        async goToPage(page) {
+            await this.fetchStarships(page);
+            this.currentPage = page;
+        },
+        goToPreviousPage(category) {
+            if (this.currentPage > 1) {
+                this.goToPage(category, this.currentPage - 1);
+            }
+        },
+        goToNextPage(category) {
+            if (this.currentPage < this.totalPages) {
+                this.goToPage(category, this.currentPage + 1);
+            }
         },
         showDetails(starship) {
-         this.$router.push({ name: 'NaveDetalle', params: { id: this.getIdFromUrl(starship.url) } });
-
-        }, getIdFromUrl(url) {
+            this.$router.push({ name: 'NaveDetalle', params: { id: this.getIdFromUrl(starship.url) } });
+        },
+        getIdFromUrl(url) {
             const parts = url.split('/');
             return parts[parts.length - 2];
         }
+
     }
 };
 </script>

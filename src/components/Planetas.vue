@@ -18,6 +18,8 @@
                     </v-card>
                 </v-col>
             </v-row>
+             <v-btn @click="goToPreviousPage('planets')" v-if="currentPage > 1">Anterior</v-btn>
+                <v-btn @click="goToNextPage('planets')" v-if="currentPage < totalPages">Siguiente</v-btn>
         <router-view></router-view> 
 
      </v-container>
@@ -30,34 +32,45 @@ import axios from 'axios';
 export default {
     data() {
         return {
-            planets: []
+            planets: [],
+            currentPage: 1,
+            totalPages: null
         };
     },
     mounted() {
         this.fetchPlanets();
     },
     methods: {
-        fetchPlanets() {
-            axios.get('https://swapi.dev/api/planets/')
-                .then(response => {
-                    this.planets = response.data.results;
-                })
-                .catch(error => {
-                    console.error('Error fetching planets:', error);
-                });
+         async fetchPlanets(page = 1) {
+            try {
+                const response = await axios.get(`https://swapi.dev/api/planets/?page=${page}`);
+                this.planets = response.data.results;
+                this.totalPages = Math.ceil(response.data.count / 10); // Suponiendo que cada página contiene 10 elementos
+            } catch (error) {
+                console.error('Error fetching planets:', error);
+            }
+        },
+        async goToPage(page) {
+            await this.fetchPlanets(page);
+            this.currentPage = page;
+        },
+        goToPreviousPage(category) {
+            if (this.currentPage > 1) {
+                this.goToPage(category, this.currentPage - 1);
+            }
+        },
+        goToNextPage(category) {
+            if (this.currentPage < this.totalPages) {
+                this.goToPage(category, this.currentPage + 1);
+            }
         },
         showDetails(planet) {
             this.$router.push({ name: 'PlanetaDetalle', params: { id: this.getIdFromUrl(planet.url) } });
-
         },
         getIdFromUrl(url) {
             const parts = url.split('/');
             return parts[parts.length - 2];
-        },
-        openDialog(planet) {
-            this.dialog = true;
-            this.showDetails(planet);
-        },
+        }
         
     }
 };
