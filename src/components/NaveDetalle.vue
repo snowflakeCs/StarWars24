@@ -15,9 +15,22 @@
                             <p><strong>Capacidad Cargo:</strong> {{ selectedStarship.cargo_capacity }}</p>
                             <p><strong>Consumibles:</strong> {{ selectedStarship.consumables }}</p>
                             <p><strong>Clase:</strong> {{ selectedStarship.starship_class }}</p>
-                            <p v-if="selectedStarship.films.length !== 0"><strong>Peliculas:</strong> {{ selectedStarship.films }}</p>
-                            <p v-if="selectedStarship.pilots.length !== 0"><strong>Pilotos:</strong> {{ selectedStarship.pilots }}</p>
-
+                            <p v-if="selectedStarship.films.length !== 0">
+                                <strong>Peliculas:</strong>
+                                <ul>
+                                    <li v-for="film in selectedStarship.films" :key="film">
+                                        <p>{{ film }}</p>
+                                    </li>
+                                </ul>
+                                 </p>
+                            <p v-if="selectedStarship.pilots.length !== 0">
+                                    <strong>Pilotos:</strong>
+                                    <ul>
+                                        <li v-for="pilot in selectedStarship.pilots" :key="pilot">
+                                            <p>{{ pilot }}</p>
+                                        </li>
+                                    </ul>
+                                     </p>
 
                         </div>
             </v-card-text>

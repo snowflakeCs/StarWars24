@@ -25,7 +25,15 @@
 
                             </ul>
                             </p>
-                            <p v-if="selectedPlanet.films.length !== 0"><strong>Peliculas:</strong> {{ selectedPlanet.films }}</p>
+
+                            <p v-if="selectedPlanet.films.length !== 0">
+                            <strong>Peliculas:</strong>
+                            <ul>
+                                <li v-for="film in selectedPlanet.films" :key="film">
+                                    <p>{{ film }}</p>
+                                </li>
+                            </ul>
+                             </p>
 
                         </div>
             </v-card-text>

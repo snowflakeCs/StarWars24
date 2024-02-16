@@ -14,9 +14,29 @@
                     <p><strong>Color de Pelo:</strong> {{ selectedPerson.hair_color }}</p>
                     <p><strong>Color de Piel:</strong> {{ selectedPerson.skin_color }}</p>
                     <p><strong>Planeta Natal:</strong> {{ selectedPerson.homeworld }}</p>
-                    <p v-if="selectedPerson.films.length !== 0"><strong>Peliculas:</strong> {{ selectedPerson.films }}</p>
-                    <p v-if="selectedPerson.starships.length !== 0"><strong>Naves:</strong> {{ selectedPerson.starships }}
+                    <p v-if="selectedPerson.films.length !== 0">
+                        <strong>Peliculas:</strong>
+                        <ul>
+                            <li v-for="film in selectedPerson.films" :key="film">
+                                <p>{{ film }}</p>
+                            </li>
+                        </ul>
                     </p>
+                    <p v-if="selectedPerson.starships.length !== 0">
+                            <strong>Naves:</strong>
+                            <ul>
+                                <li v-for="starship in selectedPerson.starships" :key="starship">
+                                    <p>{{ starship }}</p>
+                                </li>
+                                <li v-for="starship in selectedPerson.starships" :key="starship">
+                                        <a href="#" @click="showStarshipDetails(starship)">{{ starship }}</a>
+                                        <v-btn variant="flat" @click="showStarshipDetails(starship)">
+                                            Ver Nave
+                                        </v-btn>
+                                    </li>
+                            </ul>
+                        </p>
+                
                 </div>
             </v-card-text>
             <v-card-actions class="pt-0">
