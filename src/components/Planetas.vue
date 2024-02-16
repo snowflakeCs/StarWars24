@@ -1,7 +1,6 @@
 <template>
     <div>
         <v-container>
-            <h2>Planetas</h2>
             <v-row>
                 <v-col v-for="planet in planets" :key="planet.url" cols="12" sm="6" md="4" lg="3">
                     <v-card @click="showDetails(planet)" class="mx-auto mb-4" max-width="344">
