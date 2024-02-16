@@ -58,12 +58,7 @@ export default {
             this.dialog = true;
             this.showDetails(planet);
         },
-        showResidentDetails(residentUrl) {
-                    const parts = residentUrl.split('/');
-                    const result = parts.slice(5, 6).join('/'); 
-                    this.$router.push({ name: 'PersonaDetalle', params: { id: result } });
-               
-        }
+        
     }
 };
 </script>

@@ -82,6 +82,11 @@ export default {
                 return this.filmNames[url]; 
                 return url; 
             }
+        }, showStarshipDetails(starship) {
+            const parts = starship.split('/');
+            const result = parts.slice(5, 6).join('/');
+            this.$router.push({ name: 'NaveDetalle', params: { id: result } });
+
         },
         async fetchFilmNames() {
             console.log('Fetching film names...');
