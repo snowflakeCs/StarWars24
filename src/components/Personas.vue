@@ -52,11 +52,6 @@ export default {
         getIdFromUrl(url) {
             const parts = url.split('/');
             return parts[parts.length - 2];
-        }, showStarshipDetails(starship) {
-            const parts = starship.split('/');
-            const result = parts.slice(5, 6).join('/');
-            this.$router.push({ name: 'NaveDetalle', params: { id: result } });
-
         }
     }
 };

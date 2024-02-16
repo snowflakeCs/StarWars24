@@ -75,6 +75,11 @@ export default {
         },
         closeDialog() {
             this.$router.push({ name: 'planetas' });
+        }, showResidentDetails(residentUrl) {
+            const parts = residentUrl.split('/');
+            const result = parts.slice(5, 6).join('/');
+            this.$router.push({ name: 'PersonaDetalle', params: { id: result } });
+
         }
     }
 };
