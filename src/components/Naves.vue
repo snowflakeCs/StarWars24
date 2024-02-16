@@ -1,7 +1,6 @@
 <template>
     <div>
     <v-container>
-        <h2>Naves</h2>
         <v-row>
             <v-col v-for="starship in starships" :key="starship.url" cols="12" sm="6" md="4" lg="3">
                 <v-card color="deep-purple-lighten-5" class="mx-auto mb-4" max-width="344">

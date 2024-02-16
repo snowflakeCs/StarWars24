@@ -14,11 +14,11 @@
                     <p><strong>Color de Pelo:</strong> {{ selectedPerson.hair_color }}</p>
                     <p><strong>Color de Piel:</strong> {{ selectedPerson.skin_color }}</p>
                     <p><strong>Planeta Natal:</strong> {{ selectedPerson.homeworld }}</p>
-                    <p v-if="selectedPerson.films.length !== 0">
-                        <strong>Peliculas:</strong>
+                   
+                    <p v-if="selectedPerson.films.length !== 0"><strong>Peliculas:</strong>
                         <ul>
                             <li v-for="film in selectedPerson.films" :key="film">
-                                <p>{{ film }}</p>
+                                {{ filmNames[film] || film }}
                             </li>
                         </ul>
                     </p>
@@ -59,7 +59,7 @@ export default {
     data() {
         return {
             dialog: true,
-            selectedPerson: null
+            selectedPerson: null, filmNames: {}
         };
     },
     mounted() {
@@ -77,7 +77,32 @@ export default {
         },
         closeDialog() {
             this.$router.push({ name: 'personas' }); 
-        }
+        }, getFilmName(url) {
+            if (this.filmNames[url]) {
+                return this.filmNames[url]; 
+                return url; 
+            }
+        },
+        async fetchFilmNames() {
+            console.log('Fetching film names...');
+            for (const film of this.selectedPerson.films) {
+                try {
+                    console.log('Fetching data for film:', film);
+                    const response = await axios.get(film);
+                    console.log('Response for film:', film, response.data);
+                    if (response && response.data && response.data.title) {
+                        this.$set(this.filmNames, film, response.data.title);
+                    } else {
+                        console.error('Film data incomplete or missing title:', film);
+                    }
+                } catch (error) {
+                    console.error('Error fetching film data:', error);
+                }
+            }
+            console.log('Film names fetched:', this.filmNames);
+        },
+
+
     }
 };
 </script>
