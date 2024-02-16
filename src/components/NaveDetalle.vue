@@ -1,7 +1,7 @@
 
 <template>
     <v-dialog v-model="dialog" max-width="600">
-        <v-card v-if="selectedStarship">
+        <v-card v-if="selectedStarship" v-click-outside="hideDialog">
             <v-card-text class="pb-0">
                <div class="starship-details">
                             <p class="text-h4 text--primary">
@@ -72,7 +72,9 @@ export default {
         },
         closeDialog() {
             this.$router.push({ name: 'naves' });
-        }
+        },hideDialog() {
+            this.$router.push({ name: 'naves' });
+        },
     }
 };
 </script>

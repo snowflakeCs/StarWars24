@@ -1,7 +1,7 @@
 
 <template>
     <v-dialog v-model="dialog" max-width="600">
-        <v-card v-if="selectedPlanet">
+        <v-card v-if="selectedPlanet" v-click-outside="hideDialog">
             <v-card-text class="pb-0">
                  <div class="person-details">
                             <p class="text-h4 text--primary">
@@ -72,6 +72,8 @@ export default {
                 .catch(error => {
                     console.error('Error fetching person details:', error);
                 });
+        },hideDialog() {
+            this.$router.push({ name: 'planetas' });
         },
         closeDialog() {
             this.$router.push({ name: 'planetas' });
