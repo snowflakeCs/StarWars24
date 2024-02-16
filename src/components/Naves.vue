@@ -53,14 +53,14 @@ export default {
             await this.fetchStarships(page);
             this.currentPage = page;
         },
-        goToPreviousPage(category) {
+        goToPreviousPage() {
             if (this.currentPage > 1) {
-                this.goToPage(category, this.currentPage - 1);
+                this.goToPage(this.currentPage - 1);
             }
         },
-        goToNextPage(category) {
+        goToNextPage() {
             if (this.currentPage < this.totalPages) {
-                this.goToPage(category, this.currentPage + 1);
+                this.goToPage(this.currentPage + 1);
             }
         },
         showDetails(starship) {
