@@ -12,8 +12,6 @@
                     <p><strong>Director:</strong> {{ selectedFilm.director }}</p>
                     <p><strong>Produce:</strong> {{ selectedFilm.producer }}</p>
                     <p><strong>Fecha de Estreno:</strong> {{ selectedFilm.release_date }}</p>
-                    <p><strong>Color de Piel:</strong> {{ selectedFilm.skin_color }}</p>
-                    <p><strong>Planeta Natal:</strong> {{ selectedFilm.homeworld }}</p>
                     <p v-if="selectedFilm.starships.length !== 0">
                         <strong>Naves En la Pelicula:</strong>
                     <ul>
@@ -25,10 +23,10 @@
                         </li>
                     </ul>
                     </p>
-                    <p v-if="selectedFilm.people.length !== 0">
+                    <p v-if="selectedFilm.characters.length !== 0">
                             <strong>Personajes:</strong>
                         <ul>
-                            <li v-for="person in selectedFilm.people" :key="person">
+                            <li v-for="person in selectedFilm.characters" :key="person">
                                 <a href="#" @click="showPersonDetails(person)">{{ person }}</a>
                                 <v-btn variant="flat" @click="showPersonDetails(person)">
                                     Ver Personaje
