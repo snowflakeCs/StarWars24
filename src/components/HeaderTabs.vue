@@ -19,6 +19,15 @@
             <v-btn text @click="goToStarships"  variant="tonal" outlined class="textCoolNav">
                 Naves
             </v-btn>
+            <v-btn text @click="goToFilms"  variant="tonal" outlined class="textCoolNav">
+                    Peliculas
+                </v-btn>
+                <v-btn text @click="goToVehicles"  variant="tonal" outlined class="textCoolNav">
+                    Vehiculos
+                </v-btn>
+                <v-btn text @click="goToSpecies"  variant="tonal" outlined class="textCoolNav">
+                    Especies
+                </v-btn>
         </v-toolbar-items>
         </v-toolbar>
 
@@ -72,6 +81,9 @@ export default {
         this.fetchItems('people');
         this.fetchItems('starships');
         this.fetchItems('planets');
+        this.fetchItems('vehicles');
+        this.fetchItems('species');
+        this.fetchItems('films');
     },
     methods: {
         fetchItems(category) {
@@ -135,6 +147,15 @@ export default {
         },
         goToStarships() {
             this.$router.push({ path: '/naves?page=1' });
+        },
+        goToFilms() {
+            this.$router.push({ path: '/peliculas?page=1' });
+        },
+        goToSpecies() {
+            this.$router.push({ path: '/especies?page=1' });
+        },
+        goToVehicles() {
+            this.$router.push({ path: '/vehiculos?page=1' });
         },
         goHome() {
             this.$router.push({ path: '/' });

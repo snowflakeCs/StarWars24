@@ -15,19 +15,23 @@
                     <p><strong>Color de Piel:</strong> {{ selectedPerson.skin_color }}</p>
                     <p><strong>Planeta Natal:</strong> {{ selectedPerson.homeworld }}</p>
                    
-                    <p v-if="selectedPerson.films.length !== 0"><strong>Peliculas:</strong>
-                        <ul>
-                            <li v-for="film in selectedPerson.films" :key="film">
-                                {{ filmNames[film] || film }}
-                            </li>
-                        </ul>
-                    </p>
+                   
+                 <p v-if="selectedPerson.films.length !== 0">
+                                <strong>Peliculas:</strong>
+                                <ul>
+                               
+                                    <li v-for="film in selectedPerson.films" :key="film">
+                                            <a href="#" @click="showFilmsDetails(film)">{{ film }}</a>
+                                            <v-btn variant="flat" @click="showFilmsDetails(film)">
+                                                Ver Pelicula
+                                            </v-btn>
+                                        </li>
+                                </ul>
+                            </p>
                     <p v-if="selectedPerson.starships.length !== 0">
                             <strong>Naves:</strong>
                             <ul>
-                                <li v-for="starship in selectedPerson.starships" :key="starship">
-                                    <p>{{ starship }}</p>
-                                </li>
+                               
                                 <li v-for="starship in selectedPerson.starships" :key="starship">
                                         <a href="#" @click="showStarshipDetails(starship)">{{ starship }}</a>
                                         <v-btn variant="flat" @click="showStarshipDetails(starship)">
@@ -40,7 +44,7 @@
                 </div>
             </v-card-text>
             <v-card-actions class="pt-0">
-                <v-btn variant="text" color="teal-accent-4" @click.self="closeDialog">
+                <v-btn variant="text" color="teal-accent-4" @click="closeDialog">
                     Cerrar
                 </v-btn>
             </v-card-actions>
@@ -59,7 +63,7 @@ export default {
     data() {
         return {
             dialog: true,
-            selectedPerson: null, filmNames: {}
+            selectedPerson: null
         };
     },
     mounted() {
@@ -79,37 +83,20 @@ export default {
         },
         closeDialog() {
             this.$router.push({ name: 'personas' }); 
-        }, getFilmName(url) {
-            if (this.filmNames[url]) {
-                return this.filmNames[url]; 
-                return url; 
-            }
-        }, showStarshipDetails(starship) {
+        }
+        , showStarshipDetails(starship) {
             const parts = starship.split('/');
             const result = parts.slice(5, 6).join('/');
             this.$router.push({ name: 'NaveDetalle', params: { id: result } });
 
         },
-        async fetchFilmNames() {
-            console.log('Fetching film names...');
-            for (const film of this.selectedPerson.films) {
-                try {
-                    console.log('Fetching data for film:', film);
-                    const response = await axios.get(film);
-                    console.log('Response for film:', film, response.data);
-                    if (response && response.data && response.data.title) {
-                        this.$set(this.filmNames, film, response.data.title);
-                    } else {
-                        console.error('Film data incomplete or missing title:', film);
-                    }
-                } catch (error) {
-                    console.error('Error fetching film data:', error);
-                }
-            }
-            console.log('Film names fetched:', this.filmNames);
-        },
+        showFilmsDetails(film) {
+            const parts = film.split('/');
+            const result = parts.slice(5, 6).join('/');
+            this.$router.push({ name: 'PeliculaDetalle', params: { id: result } });
 
-
+        }
+        
     }
 };
 </script>

@@ -5,37 +5,49 @@
             <v-card-text class="pb-0">
                 <div class="person-details">
                     <p class="text-h4 text--primary">
-                        Detalles de {{ selectedSpecie.name }}
+                        Detalles de Especie {{ selectedSpecie.name }}
                     </p>
-                    <p><strong>Género:</strong> {{ selectedSpecie.gender }}</p>
-                    <p><strong>Año de nacimiento:</strong> {{ selectedSpecie.birth_year.split('BBY')[0] }}</p>
-                    <p><strong>Color de ojos:</strong> {{ selectedSpecie.eye_color }}</p>
-                    <p><strong>Masa:</strong> {{ selectedSpecie.mass }}</p>
-                    <p><strong>Color de Pelo:</strong> {{ selectedSpecie.hair_color }}</p>
-                    <p><strong>Color de Piel:</strong> {{ selectedSpecie.skin_color }}</p>
-                    <p><strong>Planeta Natal:</strong> {{ selectedSpecie.homeworld }}</p>
-
-                    <p v-if="selectedSpecie.films.length !== 0"><strong>Peliculas:</strong>
+                    <p><strong>Clasificación:</strong> {{ selectedSpecie.classification }}</p>
+                    <p><strong>Designación:</strong> {{ selectedSpecie.designation }}</p>
+                    <p><strong>Altura Promedio:</strong> {{ selectedSpecie.average_height }}</p>
+                    <p><strong>Colores de piel:</strong> {{ selectedSpecie.skin_colors }}</p>
+                    <p><strong>Colores de Pelo:</strong> {{ selectedSpecie.hair_colors }}</p>
+                    <p><strong>Colores de ojos:</strong> {{ selectedSpecie.eye_colors }}</p>
+                    <p><strong>Vida Estimada:</strong> {{ selectedSpecie.average_lifespan }}</p>
+                    <p><strong>Lenguaje:</strong> {{ selectedSpecie.language }}</p>
+                    <p v-if="selectedSpecie.homeworld.length !== 0">
+                        <strong>Planeta Natal:</strong>
                     <ul>
-                        <li v-for="film in selectedSpecie.films" :key="film">
-                            {{ filmNames[film] || film }}
-                        </li>
-                    </ul>
-                    </p>
-                    <p v-if="selectedSpecie.starships.length !== 0">
-                        <strong>Naves:</strong>
-                    <ul>
-                        <li v-for="specie in selectedSpecie.starships" :key="specie">
-                            <p>{{ specie }}</p>
-                        </li>
-                        <li v-for="specie in selectedSpecie.starships" :key="specie">
-                            <a href="#" @click="showSpecieDetails(specie)">{{ specie }}</a>
-                            <v-btn variant="flat" @click="showSpecieDetails(specie)">
-                                Ver Especie
+                        <li v-for="home in selectedSpecie.homeworld" :key="home">
+                            <a href="#" @click="showPlanetDetails(home)">{{ home }}</a>
+                            <v-btn variant="flat" @click="showPlanetDetails(home)">
+                                Ver Planeta
                             </v-btn>
                         </li>
                     </ul>
                     </p>
+                    <p v-if="selectedSpecie.people.length !== 0">
+                            <strong>Personajes de la Especie:</strong>
+                        <ul>
+                            <li v-for="person in selectedSpecie.people" :key="person">
+                                <a href="#" @click="showPersonDetails(person)">{{ person }}</a>
+                                <v-btn variant="flat" @click="showPersonDetails(person)">
+                                    Ver Planeta
+                                </v-btn>
+                            </li>
+                        </ul>
+                        </p>
+                        <p v-if="selectedSpecie.films.length !== 0">
+                                <strong>Peliculas donde se encuentran:</strong>
+                            <ul>
+                                <li v-for="film in selectedSpecie.films" :key="film">
+                                    <a href="#" @click="showFilmDetails(film)">{{ film }}</a>
+                                    <v-btn variant="flat" @click="showFilmDetails(film)">
+                                        Ver Peliculas
+                                    </v-btn>
+                                </li>
+                            </ul>
+                            </p>
 
                 </div>
             </v-card-text>
@@ -59,7 +71,7 @@ export default {
     data() {
         return {
             dialog: true,
-            selectedSpecie: null, filmNames: {}
+            selectedSpecie: null,
         };
     },
     mounted() {
@@ -79,35 +91,23 @@ export default {
         },
         closeDialog() {
             this.$router.push({ name: 'especies' });
-        }, getFilmName(url) {
-            if (this.filmNames[url]) {
-                return this.filmNames[url];
-                return url;
-            }
-        }, showSpecieDetails(specie) {
-            const parts = specie.split('/');
+        }, showPlanetDetails(home) {
+            const parts = home.split('/');
             const result = parts.slice(5, 6).join('/');
-            this.$router.push({ name: 'NaveDetalle', params: { id: result } });
+            this.$router.push({ name: 'PlanetaDetalle', params: { id: result } });
 
-        },
-        async fetchFilmNames() {
-            console.log('Fetching film names...');
-            for (const film of this.selectedSpecie.films) {
-                try {
-                    console.log('Fetching data for film:', film);
-                    const response = await axios.get(film);
-                    console.log('Response for film:', film, response.data);
-                    if (response && response.data && response.data.title) {
-                        this.$set(this.filmNames, film, response.data.title);
-                    } else {
-                        console.error('Film data incomplete or missing title:', film);
-                    }
-                } catch (error) {
-                    console.error('Error fetching film data:', error);
-                }
-            }
-            console.log('Film names fetched:', this.filmNames);
-        },
+        }
+        , showPersonDetails(person) {
+            const parts = person.split('/');
+            const result = parts.slice(5, 6).join('/');
+            this.$router.push({ name: 'PersonaDetalle', params: { id: result } });
+
+        }, showFilmDetails(film) {
+            const parts = film.split('/');
+            const result = parts.slice(5, 6).join('/');
+            this.$router.push({ name: 'PeliculaDetalle', params: { id: result } });
+
+        }
 
 
     }
