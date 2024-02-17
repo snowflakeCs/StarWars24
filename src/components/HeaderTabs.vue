@@ -112,8 +112,14 @@ export default {
                 return 'Nave';
             } else if (item.hasOwnProperty('terrain')) {
                 return 'Planeta';
+            } else if (item.hasOwnProperty('episode_id')) {
+                return 'Pelicula';
+            } else if (item.hasOwnProperty('skin_colors')) {
+                return 'Especie';
+            } else if (item.hasOwnProperty('vehicle_class')) {
+                return 'Vehiculo';
             }
-            return '';
+            return ''; //
         },
         showDetails(item) {
             let routeName;
@@ -127,6 +133,15 @@ export default {
                     break;
                 case 'Planeta':
                     routeName = 'PlanetaDetalle';
+                    break;
+                case 'Pelicula':
+                    routeName = 'PeliculaDetalle';
+                    break;
+                case 'Especie':
+                    routeName = 'EspecieDetalle';
+                    break;
+                case 'Vehiculo':
+                    routeName = 'VehiculoDetalle';
                     break;
                 default:
                     console.error('Tipo de item no reconocido:', item.type);

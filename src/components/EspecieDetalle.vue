@@ -15,17 +15,7 @@
                     <p><strong>Colores de ojos:</strong> {{ selectedSpecie.eye_colors }}</p>
                     <p><strong>Vida Estimada:</strong> {{ selectedSpecie.average_lifespan }}</p>
                     <p><strong>Lenguaje:</strong> {{ selectedSpecie.language }}</p>
-                    <p v-if="selectedSpecie.homeworld.length !== 0">
-                        <strong>Planeta Natal:</strong>
-                    <ul>
-                        <li v-for="home in selectedSpecie.homeworld" :key="home">
-                            <a href="#" @click="showPlanetDetails(home)">{{ home }}</a>
-                            <v-btn variant="flat" @click="showPlanetDetails(home)">
-                                Ver Planeta
-                            </v-btn>
-                        </li>
-                    </ul>
-                    </p>
+                    <p><strong>Planeta Natal:</strong> {{ selectedSpecie.homeworld }}</p>
                     <p v-if="selectedSpecie.people.length !== 0">
                             <strong>Personajes de la Especie:</strong>
                         <ul>
@@ -79,7 +69,7 @@ export default {
     },
     methods: {
         loadSpecieDetails(id) {
-            axios.get(`https://swapi.dev/api/specie/${id}/`)
+            axios.get(`https://swapi.dev/api/species/${id}/`)
                 .then(response => {
                     this.selectedSpecie = response.data;
                 })

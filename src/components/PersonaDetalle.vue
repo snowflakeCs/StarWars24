@@ -21,7 +21,7 @@
                                 <ul>
                                
                                     <li v-for="film in selectedPerson.films" :key="film">
-                                            <a href="#" @click="showFilmsDetails(film)">{{ film }}</a>
+                                            <a href="#" @click="showFilmsDetails(film)">{{ filmTitles.title }}</a>
                                             <v-btn variant="flat" @click="showFilmsDetails(film)">
                                                 Ver Pelicula
                                             </v-btn>
@@ -59,26 +59,43 @@
 import axios from 'axios';
 
 export default {
-    props: ['id'],
+    props: ['id','film'],
     data() {
         return {
             dialog: true,
-            selectedPerson: null
+            selectedPerson: null, filmTitles: {}
         };
     },
     mounted() {
         this.loadPersonDetails(this.id);
+
     },
     methods: {
         loadPersonDetails(id) {
             axios.get(`https://swapi.dev/api/people/${id}/`)
                 .then(response => {
                     this.selectedPerson = response.data;
+                    this.loadFilmTitles();
                 })
                 .catch(error => {
                     console.error('Error fetching person details:', error);
                 });
-        }, hideDialog() {
+        },  loadFilmTitles() {
+            this.selectedPerson.films.forEach(filmUrl => {
+                axios.get(filmUrl)
+                    .then(response => {
+                        if (response.data && response.data.title) {
+                            this.filmTitles=response.data
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching film details:', error);
+                    });
+            });
+        },
+        getFilmName(filmUrl) {
+            return this.filmTitles[filmUrl] || filmUrl;
+        },hideDialog() {
             this.$router.push({ name: 'personas' });
         },
         closeDialog() {
