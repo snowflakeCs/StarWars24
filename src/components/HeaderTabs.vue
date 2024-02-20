@@ -2,33 +2,35 @@
     <v-card flat>
         <v-toolbar height="100" :elevation="8" color="#020106" dark dense>
             <v-app-bar-nav-icon></v-app-bar-nav-icon>
-            <v-toolbar-title class="text-h5"><h2 @click="goHome" class="textCool">Star Wars Info</h2></v-toolbar-title>
+            <v-toolbar-title class="text-h5">
+                <h2 @click="goHome" class="textCool">Star Wars Info</h2>
+            </v-toolbar-title>
             <v-spacer></v-spacer>
 
-            <v-text-field v-if="!isHomeView" v-model="searchQuery" label="Buscar por nombre o tipo"
-                @input="filterItems" clearable variant="outlined" dense>
+            <v-text-field v-if="!isHomeView" v-model="searchQuery" label="Buscar por nombre o tipo" @input="filterItems"
+                clearable variant="outlined" dense>
             </v-text-field>
             <v-spacer></v-spacer>
             <v-toolbar-items>
-            <v-btn text @click="goToPeople"  variant="tonal" outlined class="textCoolNav">
-                Personajes
-            </v-btn>
-            <v-btn text @click="goToPlanets"  variant="tonal" outlined class="textCoolNav">
-                Planetas
-            </v-btn>
-            <v-btn text @click="goToStarships"  variant="tonal" outlined class="textCoolNav">
-                Naves
-            </v-btn>
-            <v-btn text @click="goToFilms"  variant="tonal" outlined class="textCoolNav">
+                <v-btn text @click="goToPeople" variant="tonal" outlined class="textCoolNav">
+                    Personajes
+                </v-btn>
+                <v-btn text @click="goToPlanets" variant="tonal" outlined class="textCoolNav">
+                    Planetas
+                </v-btn>
+                <v-btn text @click="goToStarships" variant="tonal" outlined class="textCoolNav">
+                    Naves
+                </v-btn>
+                <v-btn text @click="goToFilms" variant="tonal" outlined class="textCoolNav">
                     Peliculas
                 </v-btn>
-                <v-btn text @click="goToVehicles"  variant="tonal" outlined class="textCoolNav">
+                <v-btn text @click="goToVehicles" variant="tonal" outlined class="textCoolNav">
                     Vehiculos
                 </v-btn>
-                <v-btn text @click="goToSpecies"  variant="tonal" outlined class="textCoolNav">
+                <v-btn text @click="goToSpecies" variant="tonal" outlined class="textCoolNav">
                     Especies
                 </v-btn>
-        </v-toolbar-items>
+            </v-toolbar-items>
         </v-toolbar>
 
         <!-- Modal para mostrar detalles -->
@@ -45,18 +47,18 @@
             </v-card>
         </v-dialog>
     </v-card>
-        <!-- Lista de resultados -->
+
+    <!-- Lista de resultados -->
     <v-card v-if="searchQuery.length >= 2" class="search-results" max-width="450">
         <v-list>
-            <v-list-item v-for="item in filteredItems" :key="item.url" @click="showDetails(item)"  color="primary"
-            rounded="shaped">
+            <v-list-item v-for="item in filteredItems" :key="item.url" @click="showDetails(item)" color="primary"
+                rounded="shaped">
                 <v-list-item-content>
                     <v-list-item-title>{{ item.name }}</v-list-item-title>
                 </v-list-item-content>
             </v-list-item>
         </v-list>
     </v-card>
-    
 </template>
 
 <script>
@@ -71,7 +73,8 @@ export default {
             dialog: false,
             selectedResult: null,
         };
-    }, computed: {
+    },
+    computed: {
         isHomeView() {
             // Comprueba si la ruta actual es HomeView
             return this.$route.name === 'home';
@@ -86,6 +89,19 @@ export default {
         this.fetchItems('films');
     },
     methods: {
+       filterItems() {
+            if (!this.searchQuery) {
+                this.filteredItems = this.items;
+                return;
+            }
+            const query = this.searchQuery.toLowerCase();
+            this.filteredItems = this.items.filter(item => {
+                const itemName = item.name || '';
+                const itemType = this.getType(item) || '';
+                return itemName.toLowerCase().includes(query) ||
+                    itemType.toLowerCase().includes(query);
+            });
+        },
         fetchItems(category) {
             axios.get(`https://swapi.dev/api/${category}/`)
                 .then(response => {
@@ -94,16 +110,6 @@ export default {
                 .catch(error => {
                     console.error(`Error fetching ${category}:`, error);
                 });
-        },
-        filterItems() {
-            if (!this.searchQuery) {
-                this.filteredItems = [];
-                return;
-            }
-            const query = this.searchQuery.toLowerCase();
-            this.filteredItems = this.items.filter(item =>
-                item.name.toLowerCase().includes(query)
-            );
         },
         getType(item) {
             if (item.hasOwnProperty('gender')) {
@@ -153,6 +159,7 @@ export default {
         getIdFromUrl(url) {
             const parts = url.split('/');
             return parts[parts.length - 2];
+
         },
         goToPeople() {
             this.$router.push({ path: '/personas?page=1' });
