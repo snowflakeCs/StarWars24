@@ -25,25 +25,22 @@ p {
     text-align: center;
     position: absolute;
     left: 50%;
-    top: 50%;
+    top: 25%;
     transform: translate(-50%, -50%);
     color: #daf6ff;
-    text-shadow: 0 0 20px #c10ae6, 0 0 20px rgba(10, 175, 230, 0);
+    text-shadow: 0 0 20px #c10ae6, 0 0 20px rgba(10, 175, 230, 0); }
     .time {
-        letter-spacing: 0.05em;
-        font-size: 80px;
-        padding: 5px 0;
+        font-size: 6vh;
     }
     .date {
         letter-spacing: 0.1em;
-        font-size: 24px;
+        font-size: 2vh;
     }
     .text {
         letter-spacing: 0.1em;
-        font-size: 12px;
-        padding: 20px 0 0;
+        font-size: 2vh;
     }
-}
+
 
 </style>
 
