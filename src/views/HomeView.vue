@@ -8,7 +8,7 @@ import Search from '@/components/Search.vue';
 <template>
   <main>
     <Clock></Clock>
-    <CardsMenu></CardsMenu>
+    <!--<CardsMenu></CardsMenu>-->
    <!--<Search></Search>--> 
 
   </main>

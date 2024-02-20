@@ -118,7 +118,6 @@
 
 @media all and (max-width: 500px) {
   .card-list {
-    /* On small screens, we are no longer using row direction but column */
     flex-direction: column;
   }
 }
